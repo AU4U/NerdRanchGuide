@@ -11,3 +11,4 @@ gradle
 /captures
 .externalNativeBuild
 gradlew.bat
+.gradle/
