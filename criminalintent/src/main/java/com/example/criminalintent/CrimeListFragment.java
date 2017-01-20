@@ -39,7 +39,7 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder{
+    private class CrimeHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
@@ -55,6 +55,11 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView  = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(),mCrime.getTitle()+ " clicked!", Toast.LENGTH_SHORT).show();
         }
     }
     private class CrimeAdapter extends  RecyclerView.Adapter<CrimeHolder>{
