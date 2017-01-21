@@ -1,5 +1,6 @@
 package com.example.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
-    public static final String TAG ="CrimeListFragment";
+    private static final String TAG ="CrimeListFragment";
     private CrimeAdapter mAdapter;
 
     @Override
@@ -32,11 +33,21 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if(mAdapter == null){
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }else{
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
@@ -55,11 +66,15 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView  = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(),mCrime.getTitle()+ " clicked!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(),mCrime.getTitle()+ " clicked!", Toast.LENGTH_SHORT).show();
+            Intent intent = CrimeActivity.newItent(getActivity(), mCrime.getId());
+            startActivity(intent);
+
         }
     }
     private class CrimeAdapter extends  RecyclerView.Adapter<CrimeHolder>{
