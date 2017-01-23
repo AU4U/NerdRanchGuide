@@ -20,7 +20,12 @@ public class AudioPlayer {
     public void play(Context context) {
         stop();
         mPlayer = MediaPlayer.create(context,R.raw.one_small_step);
-
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                stop();
+            }
+        });
         mPlayer.start();
     }
 
